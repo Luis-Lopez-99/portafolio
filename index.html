@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portafolio - Ing. Luis Lopez</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="desktop">
+
+        <!-- Barra superior tipo macOS (sin logos) -->
+        <header class="menu-bar">
+            <div class="menu-left">
+                <span class="menu-logo"></span>
+                <span class="menu-item">Inicio</span>
+                <!-- 
+                <span class="menu-item">Proyects</span> 
+                -->
+                <!-- botón que abre ventana "Sobre mí" -->
+                <button class="menu-item menu-about-btn" type="button">
+                    Sobre mí
+                </button>
+            </div>
+
+            <div class="menu-center">
+                <span class="menu-title">Portafolio</span>
+            </div>
+
+            <div class="menu-right">
+                <span class="menu-icon">⌘</span>
+                <span class="menu-icon">☀︎</span>
+                <!--        <span id="theme-toggle" class="menu-icon" style="cursor:pointer;">☀︎</span> -->
+                <span class="menu-icon">📶</span>
+                <span class="menu-icon">🔋</span>
+                <span id="clock" class="menu-clock"></span>
+            </div>
+        </header>
+
+        <!-- Área central del escritorio -->
+        <main class="desktop-area">
+            <div class="profile-card">
+                <div class="avatar">
+                    <span>MX</span>
+                </div>
+                <h1 class="username">luis</h1>
+                <p class="role">Desarrollador · Frontend / Backend</p>
+                <p class="description">
+                    Bienvenido a mi portafolio. Aquí encontrarás infromacion sobre mis trabajos
+                    y enlaces importantes.
+                </p>
+            </div>
+        </main>
+
+        <!-- VENTANA: PROYECTO -->
+
+
+        <section id="app-window-project" class="app-window hidden" data-window="project">
+            <header class="app-window-header">
+                <div class="traffic-lights">
+                    <button class="traffic-btn app-window-btn-close"></button>
+                    <button class="traffic-btn app-window-btn-min"></button>
+                    <button class="traffic-btn app-window-btn-max"></button>
+                </div>
+                <div class="app-window-title">Proyecto</div>
+            </header>
+            <div class="app-window-body">
+                <p>Contenido del proyecto...</p>
+            </div>
+        </section>
+
+
+
+        <!-- -->
+        <!-- VENTANA: SOBRE MÍ -->
+        <section id="app-window-about" class="app-window hidden" data-window="about">
+            <header class="app-window-header">
+                <div class="traffic-lights">
+                    <button class="traffic-btn app-window-btn-close"></button>
+                    <button class="traffic-btn app-window-btn-min"></button>
+                    <button class="traffic-btn app-window-btn-max"></button>
+                </div>
+                <div class="app-window-title">Sobre mí</div>
+            </header>
+            <div class="app-window-body">
+                <p><strong>Hola, soy el Ingeniero Luis Lopez con 7 años de trayectoria en desarrollo de software
+                        desde 2018.</strong></p>
+                <p>
+                    Soy Ingeniero en Sistemas con más de 7 años de experiencia en desarrollo de software, iniciando mi
+                    trayectoria en 2018. Me desempeño como Desarrollador Full Stack, combinando diseño frontend,
+                    programación backend y gestión de bases de datos tanto relacionales como no relacionales.
+                    <br>
+                    He trabajado en la creación y optimización de aplicaciones de distintas escalas, desde herramientas
+                    internas hasta plataformas completas para usuarios finales. También cuento con experiencia en
+                    entornos cloud y en el despliegue de soluciones escalables y seguras.
+                    <br>
+                    Familiarizado con metodologías ágiles como Scrum y Kanban, me adapto con facilidad a equipos
+                    multidisciplinarios y a proyectos dinámicos. Me caracterizo por una mentalidad analítica orientada a
+                    la resolución de problemas, el uso de buenas prácticas y la entrega de soluciones eficientes.
+                    <br>
+                    Mi objetivo es aportar tecnología que genere valor real, impulsando el crecimiento de los proyectos
+                    mediante productos funcionales, modernos y de alto rendimiento. Estoy abierto a nuevos retos y
+                    oportunidades donde pueda aplicar mi experiencia y creatividad.
+                    <br>
+                </p>
+
+
+            </div>
+        </section>
+
+        <!-- Dock inferior tipo macOS -->
+        <nav class="dock">
+            <!-- Proyectos que abren la MISMA ventana -->
+            <a class="dock-item open-project-window" href="#" data-project-id="p1">
+                <span class="dock-icon">
+                    <img src="carpeta.png">
+                </span>
+
+                <span class="dock-label">P1</span>
+            </a>
+
+            <a class="dock-item open-project-window" href="#" data-project-id="p2">
+                <span class="dock-icon">
+                    <img src="carpeta.png">
+                </span>
+                <span class="dock-label">P2</span>
+            </a>
+
+            <a class="dock-item open-project-window" href="#" data-project-id="p3">
+                <span class="dock-icon">
+                    <img src="carpeta.png">
+                </span>
+                <span class="dock-label">P3</span>
+            </a>
+
+            <a class="dock-item" href="https://github.com/Luis-Lopez-99" target="_blank">
+                <span class="dock-icon">
+                    <img src="hub2.png">
+                </span>
+                <span class="dock-label">GitHub</span>
+            </a>
+
+            <a class="dock-item" href="https://www.linkedin.com/in/luis-eduardo-lopez-ake-96a622184" target="_blank">
+                 <span class="dock-icon">
+                    <img src="linkedin.png">
+                </span>
+                <span class="dock-label">LinkedIn</span>
+            </a>
+
+            <a class="dock-item" href="mailto:luislopez.job99@gmail.com">
+                 <span class="dock-icon">
+                    <img src="correo.png">
+                </span>
+                <span class="dock-label">Email</span>
+            </a>
+        </nav>
+
+
+
+    </div>
+
+    <footer class="footer">
+        © <span id="year"></span> · ING. LUIS LOPEZ / Desarrollador Full Stack.
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
