@@ -30,7 +30,7 @@
             </div>
 
             <div class="menu-right">
-                <span class="menu-icon">⌘</span>
+                <span id="open-demo" class="menu-icon" style="cursor: pointer;">⌘</span>
                 <span class="menu-icon">☀︎</span>
                 <!--        <span id="theme-toggle" class="menu-icon" style="cursor:pointer;">☀︎</span> -->
                 <span class="menu-icon">📶</span>
@@ -38,6 +38,13 @@
                 <span id="clock" class="menu-clock"></span>
             </div>
         </header>
+
+        <!-- para abrir el juego -->
+        <script>
+            document.getElementById("open-demo").addEventListener("click", function () {
+                window.open("juego.html", "_blank");
+            });
+        </script>
 
         <!-- Área central del escritorio -->
         <main class="desktop-area">
@@ -142,14 +149,14 @@
             </a>
 
             <a class="dock-item" href="https://www.linkedin.com/in/luis-eduardo-lopez-ake-96a622184" target="_blank">
-                 <span class="dock-icon">
+                <span class="dock-icon">
                     <img src="linkedin.png">
                 </span>
                 <span class="dock-label">LinkedIn</span>
             </a>
 
             <a class="dock-item" href="mailto:luislopez.job99@gmail.com">
-                 <span class="dock-icon">
+                <span class="dock-icon">
                     <img src="correo.png">
                 </span>
                 <span class="dock-label">Email</span>
