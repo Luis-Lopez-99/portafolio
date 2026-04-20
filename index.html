@@ -2,176 +2,2110 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portafolio - Ing. Luis Lopez</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Mi CV — macOS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #1d1d1f;
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════════
+     WALLPAPER
+  ══════════════════════════════ */
+    .wallpaper {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0b2a8a, #1e88c7, #2ec4b6, #6ee7b7);
+      z-index: 0;
+    }
+
+    .wallpaper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(0, 0, 0, 0.2) 0%, transparent 50%);
+    }
+
+    /* ══════════════════════════════
+     MENU BAR (desktop)
+  ══════════════════════════════ */
+    .menubar {
+      position: relative;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      color: white;
+      font-size: 13px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .menubar-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .menubar-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+    }
+
+    .menubar-item {
+      cursor: default;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .menubar-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .menubar-item.bold {
+      font-weight: 700;
+    }
+
+    #clock {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════
+     DESKTOP AREA
+  ══════════════════════════════ */
+    .desktop {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Desktop icons (visible on desktop only) */
+    .desktop-icons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .desktop-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      width: 72px;
+    }
+
+    .desktop-icon:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .desktop-icon:active {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .desktop-icon .icon-img {
+      font-size: 2.8rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    .desktop-icon .icon-label {
+      font-size: 11px;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════
+     WINDOWS (desktop)
+  ══════════════════════════════ */
+    .window {
+      position: absolute;
+      background: rgba(240, 240, 245, 0.95);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.1);
+      min-width: 320px;
+      min-height: 200px;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .window.active {
+      display: flex;
+    }
+
+    .window.focused {
+      z-index: 200;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .win-titlebar {
+      background: rgba(230, 230, 235, 0.9);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: move;
+      border-radius: 12px 12px 0 0;
+      flex-shrink: 0;
+    }
+
+    .win-controls {
+      display: flex;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .win-btn {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: transparent;
+      transition: color 0.1s;
+    }
+
+    .win-btn:hover {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .win-btn.close {
+      background: #ff5f57;
+    }
+
+    .win-btn.minimize {
+      background: #ffbd2e;
+    }
+
+    .win-btn.maximize {
+      background: #28ca41;
+      cursor: pointer;
+    }
+
+    /* Maximized window */
+    .window.maximized {
+      position: fixed !important;
+      inset: 28px 0 80px 0 !important;
+      width: 100% !important;
+      height: calc(100% - 108px) !important;
+      border-radius: 0 !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .window.maximized .win-resize {
+      display: none;
+    }
+
+    .window.focused.maximized {
+      z-index: 300 !important;
+    }
+
+    .win-title {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .win-icon {
+      font-size: 14px;
+    }
+
+    .win-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      color: #1d1d1f;
+    }
+
+    .win-body::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .win-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .win-body::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+    }
+
+    .win-resize {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 16px;
+      height: 16px;
+      cursor: se-resize;
+    }
+
+    /* ══════════════════════════════
+     DOCK (desktop)
+  ══════════════════════════════ */
+    .dock-wrapper {
+      position: relative;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 12px;
+      flex-shrink: 0;
+    }
+
+    .dock {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 20px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    .dock-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s;
+    }
+
+    .dock-item:hover {
+      transform: translateY(-8px) scale(1.15);
+    }
+
+    .dock-item:hover .dock-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .dock-item:active {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .dock-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.2s;
+    }
+
+    .dock-item:hover .dock-icon {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .dock-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      display: none;
+    }
+
+    .dock-dot.visible {
+      display: block;
+    }
+
+    .dock-tooltip {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      background: rgba(30, 30, 30, 0.85);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .dock-sep {
+      width: 1px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.3);
+      margin: 0 4px;
+      align-self: center;
+    }
+
+    /* ══════════════════════════════
+     SHARED CONTENT STYLES
+  ══════════════════════════════ */
+    .win-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6e6e73;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .win-h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1d1d1f;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .win-h1 span {
+      background: linear-gradient(135deg, #667eea, #f5576c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .win-role {
+      font-size: 14px;
+      color: #6e6e73;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .win-about-text {
+      font-size: 14px;
+      color: #3d3d3f;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .win-divider {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.08);
+      margin: 16px 0;
+    }
+
+    .win-subtitle {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-bottom: 14px;
+    }
+
+    .contact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #1d1d1f;
+      margin: 4px;
+      text-decoration: none;
+    }
+
+    .contact-chip i {
+      color: #667eea;
+    }
+
+    .contact-chip:hover {
+      background: rgba(102, 126, 234, 0.12);
+    }
+
+    .exp-card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .exp-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .exp-job-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .exp-badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .exp-company-row {
+      font-size: 12px;
+      color: #6e6e73;
+      margin-bottom: 8px;
+    }
+
+    .exp-desc {
+      font-size: 13px;
+      color: #3d3d3f;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tech-pill {
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(102, 126, 234, 0.1);
+      color: #5a52d5;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .skill-row {
+      margin-bottom: 14px;
+    }
+
+    .skill-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .skill-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .skill-val {
+      font-size: 12px;
+      color: #6e6e73;
+      font-weight: 500;
+    }
+
+    .skill-track {
+      height: 6px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .skill-prog {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #667eea, #f5576c);
+      transition: width 1s ease;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .soft-skill {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      font-size: 12px;
+      font-weight: 600;
+      color: #3d3d3f;
+    }
+
+    .soft-skill .icon {
+      font-size: 1.4rem;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .edu-card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .edu-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .edu-degree {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .edu-school {
+      font-size: 12px;
+      color: #6e6e73;
+      margin: 2px 0;
+    }
+
+    .edu-year {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(102, 126, 234, 0.1);
+      color: #5a52d5;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 4px;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .project-banner {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .project-body {
+      padding: 14px;
+    }
+
+    .project-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .project-desc {
+      font-size: 12px;
+      color: #6e6e73;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .proj-link {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .proj-link.demo {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .proj-link.code {
+      background: rgba(0, 0, 0, 0.06);
+      color: #1d1d1f;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .contact-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      text-decoration: none;
+      color: #1d1d1f;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-card .c-icon {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .contact-card .c-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6e6e73;
+    }
+
+    .contact-card .c-value {
+      font-size: 11px;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    /* ══════════════════════════════
+     NOTIFICATION
+  ══════════════════════════════ */
+    .notification {
+      position: fixed;
+      top: 40px;
+      right: 20px;
+      background: rgba(240, 240, 245, 0.96);
+      backdrop-filter: blur(20px);
+      border-radius: 14px;
+      padding: 14px 16px;
+      width: 280px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transform: translateX(340px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notif-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .notif-app {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6e6e73;
+      margin-bottom: 2px;
+    }
+
+    .notif-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .notif-body {
+      font-size: 12px;
+      color: #6e6e73;
+    }
+
+    /* ══════════════════════════════
+     SPOTLIGHT
+  ══════════════════════════════ */
+    .spotlight-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 5000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 15vh;
+    }
+
+    .spotlight-overlay.show {
+      display: flex;
+    }
+
+    .spotlight-box {
+      background: rgba(240, 240, 245, 0.92);
+      backdrop-filter: blur(40px);
+      border-radius: 14px;
+      width: min(600px, 92vw);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .spotlight-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 16px 20px;
+      font-size: 20px;
+      font-weight: 400;
+      color: #1d1d1f;
+      font-family: inherit;
+    }
+
+    .spotlight-results {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 8px;
+    }
+
+    .spotlight-result {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .spotlight-result:hover,
+    .spotlight-result.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .sr-icon {
+      font-size: 1.4rem;
+    }
+
+    /* ══════════════════════════════
+     MOBILE — iOS STYLE
+  ══════════════════════════════ */
+    /* Status bar for mobile */
+    .ios-statusbar {
+      display: none;
+      position: relative;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      height: 44px;
+      flex-shrink: 0;
+      padding: 0 20px;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .ios-statusbar .ios-time {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .ios-statusbar .ios-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    /* iOS Home screen grid */
+    .ios-homescreen {
+      display: none;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      overflow: hidden;
+      flex-direction: column;
+      padding: 20px 16px 16px;
+    }
+
+    .ios-greeting {
+      color: white;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .ios-greeting h2 {
+      font-size: 22px;
+      font-weight: 700;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .ios-greeting p {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .ios-app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px 8px;
+      justify-items: center;
+    }
+
+    .ios-app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      width: 100%;
+    }
+
+    .ios-app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transition: transform 0.12s, opacity 0.12s;
+      position: relative;
+    }
+
+    .ios-app:active .ios-app-icon {
+      transform: scale(0.88);
+      opacity: 0.85;
+    }
+
+    .ios-app-label {
+      font-size: 10px;
+      color: white;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* iOS Bottom dock */
+    .ios-dock {
+      display: none;
+      position: relative;
+      z-index: 1000;
+      padding: 8px 16px 20px;
+      flex-shrink: 0;
+    }
+
+    .ios-dock-inner {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ios-dock-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .ios-dock-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.12s;
+    }
+
+    .ios-dock-item:active .ios-dock-icon {
+      transform: scale(0.88);
+    }
+
+    .ios-dock-label {
+      font-size: 10px;
+      color: white;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ── iOS Full-screen panel ── */
+    .ios-panel {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      flex-direction: column;
+      background: #f2f2f7;
+    }
+
+    .ios-panel.open {
+      display: flex;
+      animation: slideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+    }
+
+    .ios-panel.closing {
+      animation: slideDown 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0.5;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      to {
+        transform: translateY(100%);
+        opacity: 0.5;
+      }
+    }
+
+    /* iOS Panel nav bar */
+    .ios-panel-nav {
+      background: rgba(242, 242, 247, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 12px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      padding-top: max(12px, env(safe-area-inset-top));
+    }
+
+    .ios-panel-back {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #007aff;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px 0;
+    }
+
+    .ios-panel-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .ios-panel-right {
+      width: 70px;
+      text-align: right;
+    }
+
+    /* iOS Panel body */
+    .ios-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .ios-panel-body::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ══════════════════════════════
+     RESPONSIVE BREAKPOINT
+  ══════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* Hide desktop elements */
+      .menubar {
+        display: none;
+      }
+
+      .desktop {
+        display: none;
+      }
+
+      .dock-wrapper {
+        display: none;
+      }
+
+      .notification {
+        width: calc(100vw - 32px);
+        right: 16px;
+      }
+
+      /* Show iOS elements */
+      .ios-statusbar {
+        display: flex;
+      }
+
+      .ios-homescreen {
+        display: flex;
+      }
+
+      .ios-dock {
+        display: block;
+      }
+    }
+
+    @media (min-width: 769px) {
+
+      /* Ensure iOS elements are hidden on desktop */
+      .ios-statusbar {
+        display: none !important;
+      }
+
+      .ios-homescreen {
+        display: none !important;
+      }
+
+      .ios-dock {
+        display: none !important;
+      }
+
+      .ios-panel {
+        display: none !important;
+      }
+    }
+
+    /* ══════════════════════════════
+     ANIMATIONS & UTILITIES
+  ══════════════════════════════ */
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="desktop">
 
-        <!-- Barra superior tipo macOS (sin logos) -->
-        <header class="menu-bar">
-            <div class="menu-left">
-                <span class="menu-logo"></span>
-                <span class="menu-item">Inicio</span>
-                <!-- 
-                <span class="menu-item">Proyects</span> 
-                -->
-                <!-- botón que abre ventana "Sobre mí" -->
-                <button class="menu-item menu-about-btn" type="button">
-                    Sobre mí
-                </button>
-            </div>
+  <!-- WALLPAPER (always visible) -->
+  <div class="wallpaper"></div>
 
-            <div class="menu-center">
-                <span class="menu-title">Portafolio</span>
-            </div>
+  <!-- ════════════════════════════════════
+     DESKTOP VERSION
+════════════════════════════════════ -->
 
-            <div class="menu-right">
-                <span id="open-demo" class="menu-icon" style="cursor: pointer;">⌘</span>
-                <span class="menu-icon">☀︎</span>
-                <!--        <span id="theme-toggle" class="menu-icon" style="cursor:pointer;">☀︎</span> -->
-                <span class="menu-icon">📶</span>
-                <span class="menu-icon">🔋</span>
-                <span id="clock" class="menu-clock"></span>
-            </div>
-        </header>
+  <!-- MENU BAR -->
+  <div class="menubar">
+    <div class="menubar-left">
+      <span class="menubar-item" style="font-size:15px"><img src="icono.png" alt=""></span>
+      <span class="menubar-item bold">Mi CV</span>
+      <span class="menubar-item">Archivo</span>
+      <span class="menubar-item">Edición</span>
+      <span class="menubar-item">Ver</span>
+      <span class="menubar-item">Ventana</span>
+    </div>
+    <div class="menubar-right">
+      <i class="bi bi-wifi"></i>
+      <i class="bi bi-battery-half"></i>
+      <i class="bi bi-search" id="spotlight-btn" style="cursor:pointer"></i>
+      <span id="clock">--:--</span>
+    </div>
+  </div>
 
-        <!-- para abrir el juego -->
-        <script>
-            document.getElementById("open-demo").addEventListener("click", function () {
-                window.open("juego.html", "_blank");
-            });
-        </script>
+  <!-- DESKTOP -->
+  <div class="desktop" id="desktop">
+    <div class="desktop-icons">
 
-        <!-- Área central del escritorio -->
-        <main class="desktop-area">
-            <div class="profile-card">
-                <div class="avatar">
-                    <span>MX</span>
-                </div>
-                <h1 class="username">luis</h1>
-                <p class="role">Desarrollador · Frontend / Backend</p>
-                <p class="description">
-                    Bienvenido a mi portafolio. Aquí encontrarás infromacion sobre mis trabajos
-                    y enlaces importantes.
-                </p>
-            </div>
-        </main>
-
-        <!-- VENTANA: PROYECTO -->
-
-
-        <section id="app-window-project" class="app-window hidden" data-window="project">
-            <header class="app-window-header">
-                <div class="traffic-lights">
-                    <button class="traffic-btn app-window-btn-close"></button>
-                    <button class="traffic-btn app-window-btn-min"></button>
-                    <button class="traffic-btn app-window-btn-max"></button>
-                </div>
-                <div class="app-window-title">Proyecto</div>
-            </header>
-            <div class="app-window-body">
-                <p>Contenido del proyecto...</p>
-            </div>
-        </section>
-
-
-
-        <!-- -->
-        <!-- VENTANA: SOBRE MÍ -->
-        <section id="app-window-about" class="app-window hidden" data-window="about">
-            <header class="app-window-header">
-                <div class="traffic-lights">
-                    <button class="traffic-btn app-window-btn-close"></button>
-                    <button class="traffic-btn app-window-btn-min"></button>
-                    <button class="traffic-btn app-window-btn-max"></button>
-                </div>
-                <div class="app-window-title">Sobre mí</div>
-            </header>
-            <div class="app-window-body">
-                <p><strong>Hola, soy el Ingeniero Luis Lopez con 7 años de trayectoria en desarrollo de software
-                        desde 2018.</strong></p>
-                <p>
-                    Soy Ingeniero en Sistemas con más de 7 años de experiencia en desarrollo de software, iniciando mi
-                    trayectoria en 2018. Me desempeño como Desarrollador Full Stack, combinando diseño frontend,
-                    programación backend y gestión de bases de datos tanto relacionales como no relacionales.
-                    <br>
-                    He trabajado en la creación y optimización de aplicaciones de distintas escalas, desde herramientas
-                    internas hasta plataformas completas para usuarios finales. También cuento con experiencia en
-                    entornos cloud y en el despliegue de soluciones escalables y seguras.
-                    <br>
-                    Familiarizado con metodologías ágiles como Scrum y Kanban, me adapto con facilidad a equipos
-                    multidisciplinarios y a proyectos dinámicos. Me caracterizo por una mentalidad analítica orientada a
-                    la resolución de problemas, el uso de buenas prácticas y la entrega de soluciones eficientes.
-                    <br>
-                    Mi objetivo es aportar tecnología que genere valor real, impulsando el crecimiento de los proyectos
-                    mediante productos funcionales, modernos y de alto rendimiento.
-                    <br>
-                </p>
-
-
-            </div>
-        </section>
-
-        <!-- Dock inferior tipo macOS -->
-        <nav class="dock">
-            <!-- Proyectos que abren la MISMA ventana -->
-            <a class="dock-item open-project-window" href="#" data-project-id="p1">
-                <span class="dock-icon">
-                    <img src="carpeta.png">
-                </span>
-
-                <span class="dock-label">P1</span>
-            </a>
-
-            <a class="dock-item open-project-window" href="#" data-project-id="p2">
-                <span class="dock-icon">
-                    <img src="carpeta.png">
-                </span>
-                <span class="dock-label">P2</span>
-            </a>
-
-            <a class="dock-item open-project-window" href="#" data-project-id="p3">
-                <span class="dock-icon">
-                    <img src="carpeta.png">
-                </span>
-                <span class="dock-label">P3</span>
-            </a>
-
-            <a class="dock-item" href="https://github.com/Luis-Lopez-99" target="_blank">
-                <span class="dock-icon">
-                    <img src="hub2.png">
-                </span>
-                <span class="dock-label">GitHub</span>
-            </a>
-
-            <a class="dock-item" href="https://www.linkedin.com/in/luis-eduardo-lopez-ake-96a622184" target="_blank">
-                <span class="dock-icon">
-                    <img src="linkedin.png">
-                </span>
-                <span class="dock-label">LinkedIn</span>
-            </a>
-
-            <a class="dock-item" href="mailto:luislopez.job99@gmail.com">
-                <span class="dock-icon">
-                    <img src="correo.png">
-                </span>
-                <span class="dock-label">Email</span>
-            </a>
-        </nav>
-
-
+      <!-- juego -->
+      <div class="desktop-icon" onclick="abrirJuego()">
+        <div class="icon-img">🚀</div>
+        <div class="icon-label">Juego 0.0.1</div>
+      </div>
 
     </div>
+  </div>
 
-    <footer class="footer">
-        © <span id="year"></span> · ING. LUIS LOPEZ / Desarrollador Full Stack.
-    </footer>
+  <!-- Window: Sobre mí -->
+  <div class="window" id="win-about" style="width:520px;height:440px;top:60px;left:80px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-about')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('about')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('about')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-about')">+</button>
+      </div>
+      <div class="win-title"><span class="win-icon">👤</span> Sobre mí</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" id="content-about"></div>
+    <div class="win-resize" onmousedown="startResize(event,'win-about')"></div>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- Window: Experiencia -->
+  <div class="window" id="win-experience" style="width:560px;height:500px;top:80px;left:160px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-experience')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('experience')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('experience')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-experience')">+</button>
+      </div>
+      <div class="win-title"><span class="win-icon">💼</span> Experiencia</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" id="content-experience"></div>
+    <div class="win-resize" onmousedown="startResize(event,'win-experience')"></div>
+  </div>
+
+  <!-- Window: Habilidades -->
+  <div class="window" id="win-skills" style="width:480px;height:480px;top:100px;left:250px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-skills')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('skills')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('skills')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-skills')">+</button>
+      </div>
+      <div class="win-title"><span class="win-icon">⚙️</span> Habilidades</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" id="content-skills"></div>
+    <div class="win-resize" onmousedown="startResize(event,'win-skills')"></div>
+  </div>
+
+  <!-- Window: Educación -->
+  <div class="window" id="win-education" style="width:500px;height:380px;top:120px;left:320px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-education')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('education')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('education')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-education')">+</button>
+      </div>
+      <div class="win-title"><span class="win-icon">🎓</span> Educación</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" id="content-education"></div>
+    <div class="win-resize" onmousedown="startResize(event,'win-education')"></div>
+  </div>
+
+  <!-- Window: Proyectos -->
+  <div class="window" id="win-projects" style="width:560px;height:500px;top:60px;left:200px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-projects')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('projects')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('projects')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-projects')">+</button>
+      </div>
+      <div class="win-title"><span class="win-icon">📘</span> Proyectos</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" id="content-projects"></div>
+    <div class="win-resize" onmousedown="startResize(event,'win-projects')"></div>
+  </div>
+
+  <!-- Window: Contacto -->
+  <div class="window" id="win-contact" style="width:480px;height:400px;top:80px;left:300px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-contact')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('contact')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('contact')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-contact')">+</button>
+      </div>
+      <div class="win-title"><span class="win-icon">📬</span> Contacto</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" id="content-contact"></div>
+    <div class="win-resize" onmousedown="startResize(event,'win-contact')"></div>
+  </div>
+
+  <!-- Window: Terminal -->
+  <div class="window" id="win-terminal"
+    style="width:500px;height:340px;top:140px;left:180px;background:rgba(30,30,30,0.97)">
+    <div class="win-titlebar" style="background:rgba(50,50,50,0.9);border-color:rgba(255,255,255,0.1)"
+      onmousedown="startDrag(event,'win-terminal')">
+      <div class="win-controls">
+        <button class="win-btn close" onclick="closeWindow('terminal')">✕</button>
+        <button class="win-btn minimize" onclick="minimizeWindow('terminal')">−</button>
+        <button class="win-btn maximize" onclick="toggleMaximize('win-terminal')">+</button>
+      </div>
+      <div class="win-title" style="color:#e0e0e0"><span class="win-icon">🖥️</span> Terminal — zsh</div>
+      <div style="width:55px"></div>
+    </div>
+    <div class="win-body" style="background:transparent;padding:16px;font-family:monospace;font-size:13px;color:#e0e0e0"
+      id="terminal-body">
+      <div style="color:#00e5a0">LuisServer@macbook ~ %</div>
+      <div id="terminal-output"></div>
+    </div>
+    <div class="win-resize" onmousedown="startResize(event,'win-terminal')"></div>
+  </div>
+  </div>
+
+  <!-- DOCK (desktop) -->
+  <div class="dock-wrapper">
+    <div class="dock">
+      <div class="dock-item" onclick="openWindow('about')" id="dock-about">
+        <div class="dock-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">👤</div>
+        <div class="dock-dot" id="dot-about"></div>
+        <div class="dock-tooltip">Sobre mí</div>
+      </div>
+      <div class="dock-item" onclick="openWindow('experience')" id="dock-experience">
+        <div class="dock-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">💼</div>
+        <div class="dock-dot" id="dot-experience"></div>
+        <div class="dock-tooltip">Experiencia</div>
+      </div>
+      <div class="dock-item" onclick="openWindow('skills')" id="dock-skills">
+        <div class="dock-icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">⚙️</div>
+        <div class="dock-dot" id="dot-skills"></div>
+        <div class="dock-tooltip">Habilidades</div>
+      </div>
+      <div class="dock-item" onclick="openWindow('education')" id="dock-education">
+        <div class="dock-icon" style="background:linear-gradient(135deg,#fda085,#f6d365)">🎓</div>
+        <div class="dock-dot" id="dot-education"></div>
+        <div class="dock-tooltip">Educación</div>
+      </div>
+      <div class="dock-item" onclick="openWindow('projects')" id="dock-projects">
+        <div class="dock-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">📘</div>
+        <div class="dock-dot" id="dot-projects"></div>
+        <div class="dock-tooltip">Proyectos</div>
+      </div>
+      <div class="dock-item" onclick="openWindow('contact')" id="dock-contact">
+        <div class="dock-icon" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">📬</div>
+        <div class="dock-dot" id="dot-contact"></div>
+        <div class="dock-tooltip">Contacto</div>
+      </div>
+      <div class="dock-sep"></div>
+      <div class="dock-item" onclick="openWindow('terminal')" id="dock-terminal">
+        <div class="dock-icon" style="background:#1e1e1e">🖥️</div>
+        <div class="dock-dot" id="dot-terminal"></div>
+        <div class="dock-tooltip">Terminal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+     MOBILE iOS VERSION
+════════════════════════════════════ -->
+
+  <!-- iOS Status Bar -->
+  <div class="ios-statusbar">
+    <span class="ios-time" id="ios-clock">9:41</span>
+    <div class="ios-icons">
+      <i class="bi bi-wifi"></i>
+      <i class="bi bi-reception-4"></i>
+      <i class="bi bi-battery-full"></i>
+    </div>
+  </div>
+
+  <!-- iOS Home Screen -->
+  <div class="ios-homescreen">
+    <div class="ios-greeting">
+      <h2>Mi Portafolio 👋</h2>
+      <p>Toca una app para ver más</p>
+    </div>
+
+    <div class="ios-app-grid">
+      <div class="ios-app" onclick="openPanel('about')">
+        <div class="ios-app-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">👤</div>
+        <div class="ios-app-label">Sobre mí</div>
+      </div>
+      <div class="ios-app" onclick="openPanel('experience')">
+        <div class="ios-app-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">💼</div>
+        <div class="ios-app-label">Experiencia</div>
+      </div>
+      <div class="ios-app" onclick="openPanel('skills')">
+        <div class="ios-app-icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">⚙️</div>
+        <div class="ios-app-label">Habilidades</div>
+      </div>
+      <div class="ios-app" onclick="openPanel('education')">
+        <div class="ios-app-icon" style="background:linear-gradient(135deg,#fda085,#f6d365)">🎓</div>
+        <div class="ios-app-label">Educación</div>
+      </div>
+      <div class="ios-app" onclick="openPanel('projects')">
+        <div class="ios-app-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">📘</div>
+        <div class="ios-app-label">Proyectos</div>
+      </div>
+      <div class="ios-app" onclick="openPanel('contact')">
+        <div class="ios-app-icon" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">📬</div>
+        <div class="ios-app-label">Contacto</div>
+      </div>
+      <div class="ios-app" onclick="openPanel('terminal')">
+        <div class="ios-app-icon" style="background:#1e1e1e">🖥️</div>
+        <div class="ios-app-label">Terminal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS Dock -->
+  <div class="ios-dock">
+    <div class="ios-dock-inner">
+      <div class="ios-dock-item" onclick="openPanel('about')">
+        <div class="ios-dock-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">👤</div>
+        <div class="ios-dock-label">Yo</div>
+      </div>
+      <div class="ios-dock-item" onclick="openPanel('skills')">
+        <div class="ios-dock-icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">⚙️</div>
+        <div class="ios-dock-label">Skills</div>
+      </div>
+      <div class="ios-dock-item" onclick="openPanel('projects')">
+        <div class="ios-dock-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">📘</div>
+        <div class="ios-dock-label">Proyectos</div>
+      </div>
+      <div class="ios-dock-item" onclick="openPanel('contact')">
+        <div class="ios-dock-icon" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">📬</div>
+        <div class="ios-dock-label">Contacto</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS Panels (full-screen) -->
+  <div class="ios-panel" id="panel-about">
+    <div class="ios-panel-nav">
+      <button class="ios-panel-back" onclick="closePanel('about')"><i class="bi bi-chevron-left"></i> Inicio</button>
+      <div class="ios-panel-title">👤 Sobre mí</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" id="mobile-content-about"></div>
+  </div>
+
+  <div class="ios-panel" id="panel-experience">
+    <div class="ios-panel-nav">
+      <button class="ios-panel-back" onclick="closePanel('experience')"><i class="bi bi-chevron-left"></i>
+        Inicio</button>
+      <div class="ios-panel-title">💼 Experiencia</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" id="mobile-content-experience"></div>
+  </div>
+
+  <div class="ios-panel" id="panel-skills">
+    <div class="ios-panel-nav">
+      <button class="ios-panel-back" onclick="closePanel('skills')"><i class="bi bi-chevron-left"></i> Inicio</button>
+      <div class="ios-panel-title">⚙️ Habilidades</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" id="mobile-content-skills"></div>
+  </div>
+
+  <div class="ios-panel" id="panel-education">
+    <div class="ios-panel-nav">
+      <button class="ios-panel-back" onclick="closePanel('education')"><i class="bi bi-chevron-left"></i>
+        Inicio</button>
+      <div class="ios-panel-title">🎓 Educación</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" id="mobile-content-education"></div>
+  </div>
+
+  <div class="ios-panel" id="panel-projects">
+    <div class="ios-panel-nav">
+      <button class="ios-panel-back" onclick="closePanel('projects')"><i class="bi bi-chevron-left"></i> Inicio</button>
+      <div class="ios-panel-title">📘 Proyectos</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" id="mobile-content-projects"></div>
+  </div>
+
+  <div class="ios-panel" id="panel-contact">
+    <div class="ios-panel-nav">
+      <button class="ios-panel-back" onclick="closePanel('contact')"><i class="bi bi-chevron-left"></i> Inicio</button>
+      <div class="ios-panel-title">📬 Contacto</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" id="mobile-content-contact"></div>
+  </div>
+
+  <div class="ios-panel" id="panel-terminal" style="background:#1a1a1a">
+    <div class="ios-panel-nav" style="background:rgba(30,30,30,0.95);border-color:rgba(255,255,255,0.1)">
+      <button class="ios-panel-back" style="color:#00e5a0" onclick="closePanel('terminal')"><i
+          class="bi bi-chevron-left"></i> <span style="color:#00e5a0">Inicio</span></button>
+      <div class="ios-panel-title" style="color:#e0e0e0">🖥️ Terminal</div>
+      <div class="ios-panel-right"></div>
+    </div>
+    <div class="ios-panel-body" style="background:#1a1a1a;font-family:monospace;font-size:13px;color:#e0e0e0"
+      id="mobile-terminal-body">
+      <div style="color:#00e5a0;margin-bottom:4px">LuisServer@iphone ~ %</div>
+      <div id="mobile-terminal-output"></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION 
+<div class="notification" id="notification">
+  <div class="notif-icon">👋</div>
+  <div>
+    <div class="notif-app">Mi CV</div>
+    <div class="notif-title">¡Bienvenido!</div>
+    <div class="notif-body">Toca los íconos para explorar el CV.</div>
+  </div>
+</div>
+-->
+  <!-- SPOTLIGHT -->
+  <div class="spotlight-overlay" id="spotlight">
+    <div class="spotlight-box">
+      <input class="spotlight-input" id="spotlight-input" placeholder="Buscar en el CV..."
+        oninput="searchSpotlight(this.value)" onkeydown="spotlightKey(event)" />
+      <div class="spotlight-results" id="spotlight-results"></div>
+    </div>
+  </div>
+
+  <script>
+    function abrirJuego() {
+      window.open("juego.html", "_blank");
+    }
+    /* ══════════════════════════
+       SHARED CONTENT TEMPLATES
+    ══════════════════════════ */
+    const CONTENT = {
+      about: `
+    <p class="win-section-label">// CV-Luis</p>
+    <h1 class="win-h1">LUIS EDUARDO LOPEZ AKE</h1>
+    <p class="win-role">Desarrollador Web Full Stack · Técnico en soporte · UI/UX Designer</p>
+    <div class="win-divider"></div>
+    <p class="win-about-text"> <strong>Ingeniero en Desarrollo & Gestión de Software Multiplataforma</strong> con más de 7 años de experiencia consolidada en el área de tecnologías de la información. 
+       y una sólida trayectoria de <strong>más de 9 años en soporte y mantenimiento de equipos de cómputo.</strong> Especialista en el desarrollo de sistemas, soporte informático avanzado y mantenimiento preventivo/correctivo, con un enfoque integral en la implementación de soluciones tecnológicas innovadoras para entornos administrativos y operativos.</p>
+
+    <p class="win-about-text">Profesional altamente orientado a la resolución de problemas complejos, optimización y mejora continua de procesos, así como a la atención de calidad hacia usuarios finales y stakeholders. Poseo sólidas habilidades en análisis de requerimientos, diseño de arquitecturas de software, gestión de proyectos tecnológicos y liderazgo de equipos multidisciplinarios.</p>    
+
+    <p class="win-about-text">Comprometido con la excelencia técnica y la actualización constante en las últimas tecnologías del sector. Valoro la colaboración, la comunicación efectiva y la capacidad de adaptarse a entornos dinámicos y desafiantes. Mi objetivo es continuar creciendo profesionalmente en una organización donde pueda aportar valor significativo, impulsar la innovación tecnológica y contribuir al desarrollo de productos de impacto que generen soluciones reales a los desafíos empresariales.</p>
+    
+        <p class="win-about-text">En búsqueda activa de desafíos donde pueda integrar mi experiencia técnica y de desarrollo para liderar soluciones de alto impacto, optimizando procesos y aportando una visión estratégica al ciclo de vida del software.</p>
+
+    <div>
+      <a class="contact-chip" href="mailto:luislopez.job99@gmail.com"><i class="bi bi-envelope-fill"></i> luislopez.job99@gmail.com</a>
+      <a class="contact-chip" href="#"><i class="bi bi-telephone-fill"></i> +52 983 22 99 151</a>
+      <a class="contact-chip" href="#"><i class="bi bi-geo-alt-fill"></i> Quintana Roo, Mexico</a>
+    </div>`,
+
+      experience: `
+    <p class="win-section-label">// Experiencia profesional</p>
+    <h2 class="win-subtitle">Experiencia Laboral</h2>
+    <div class="exp-card">
+      <div class="exp-header-row">
+        <span class="exp-job-title">Técnico en Sistemas computacionales</span>
+        <span class="exp-badge">2025 — Presente</span>
+      </div>
+      <p class="exp-company-row"><i class="bi bi-building"></i> Freelancer — presencial</p>
+      <p class="exp-desc">
+      · Instalación, configuración e implementación de software empresarial
+        <br>  
+      · Mantenimiento preventivo y correctivo de equipos y servidores
+        <br>
+        · Actualización de hardware
+        <br>
+        · Soporte técnico a usuarios finales y departamentos administrativos
+        <br>
+· Administración de redes locales (LAN) y conectividad
+        <br>
+· Implementación de medidas de seguridad informática
+        <br>
+· Gestión de inventario de hardware y software licenciado
+        <br>
+       · Documentación técnica de procedimientos y soluciones
+      </p>
+      <div class="tech-pills"><span class="tech-pill">Mantenimiento preventivo</span><span class="tech-pill">Mantenimiento correctivo</span><span class="tech-pill">Seguridad Informatica</span></div>
+    </div>
+
+
+    <div class="exp-card">
+      <div class="exp-header-row">
+        <span class="exp-job-title">Desarrollador de Software y Sistemas Computacionales</span>
+        <span class="exp-badge">2024 — 2024</span>
+      </div>
+      <p class="exp-company-row"><i class="bi bi-building"></i>Secretaria de Educación de Quintana Roo — presencial</p>
+      <p class="exp-desc">
+        · Actualización y rediseño de módulos heredados para mejorar rendimiento y usabilidad.
+        <br>
+Desarrollo de nuevas funcionalidades clave:
+<br>
+· Módulo de Entrega de Uniformes Escolares.
+<br>
+· Seguimiento de entregas por institución.
+<br>
+· Control de incidencias para uniformes no entregados.
+<br>
+· Reemplazo de componentes obsoletos con versiones modernas, optimizando flujos y estabilidad usando framework Laravel.
+        
+        </p>
+      <div class="tech-pills"><span class="tech-pill">Laravel</span><span class="tech-pill">SQL</span><span class="tech-pill">APIS</span><span class="tech-pill">PHP</span><span class="tech-pill">HTML</span></div>
+    </div>
+ 
+    <div class="exp-card">
+      <div class="exp-header-row">
+        <span class="exp-job-title">Desarrollador de Software y Sistemas Computacionales</span>
+        <span class="exp-badge">2023 — 2023</span>
+      </div>
+      <p class="exp-company-row"><i class="bi bi-building"></i> Instituto Medico Deportivo FyF — presencial</p>
+      <p class="exp-desc">
+        
+· Diseño y desarrollo de aplicación web móvil para registro de rutinas y seguimiento de progreso.
+        <br>
+· Implementación de ajustes automáticos de repeticiones según rendimiento del usuario.
+<br>
+· Creación de interfaz responsive para mejorar experiencia y retención de usuarios</p>
+      <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">HTML/CSS</span><span class="tech-pill">JavaScript</span><span class="tech-pill">Bootstrap</span><span class="tech-pill">SQL</span><span class="tech-pill">JSON</span></div>
+    </div>
+
+        <div class="exp-card">
+      <div class="exp-header-row">
+        <span class="exp-job-title">Desarrollador de Software y Sistemas Computacionales</span>
+        <span class="exp-badge">2022 — 2022</span>
+      </div>
+      <p class="exp-company-row"><i class="bi bi-building"></i> Tribunal Electoral de Quintana Roo — presencial</p>
+      <p class="exp-desc">
+        Desarrollo de múltiples sistemas internos:
+<br>
+· Oficialía de Partes,
+<br>
+· Estrados Electrónicos,
+<br>
+· Control de Incidentes,
+<br>
+· Sitio web oficial centrado en accesibilidad y transparencia.
+<br>
+· Infraestructura TI: configuración de servidores, cableado, soporte de red.
+      </p>
+      <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">HTML/CSS</span><span class="tech-pill">JavaScript</span><span class="tech-pill">Bootstrap</span><span class="tech-pill">SQL</span><span class="tech-pill">JSON</span></div>
+    </div>
+    
+    `,
+
+      skills: `
+    <p class="win-section-label">// Stack técnico</p>
+    <h2 class="win-subtitle">Mis Habilidades</h2>
+    
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">Laravel / CakePHP</span><span class="skill-val">95%</span></div><div class="skill-track"><div class="skill-prog" style="width:95%"></div></div></div>
+    
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">JavaScript / TypeScript</span><span class="skill-val">90%</span></div><div class="skill-track"><div class="skill-prog" style="width:90%"></div></div></div>
+    
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">Node.js</span><span class="skill-val">85%</span></div><div class="skill-track"><div class="skill-prog" style="width:85%"></div></div></div>
+    
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">CSS / Bootstrap</span><span class="skill-val">95%</span></div><div class="skill-track"><div class="skill-prog" style="width:95%"></div></div></div>
+    
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">PostgreSQL / MySQL</span><span class="skill-val">90%</span></div><div class="skill-track"><div class="skill-prog" style="width:90%"></div></div></div>
+    
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">AJAX / API</span><span class="skill-val">90%</span></div><div class="skill-track"><div class="skill-prog" style="width:90%"></div></div></div>
+
+    <div class="skill-row"><div class="skill-top"><span class="skill-name">Docker / Python</span><span class="skill-val">80%</span></div><div class="skill-track"><div class="skill-prog" style="width:80%"></div></div></div>
+    
+<p class="win-section-label">// INFRAESTRUCTURA & HARDWARE</p>
+
+<div class="skill-row"><div class="skill-top"><span class="skill-name">Mantenimiento & Soporte Técnico</span><span class="skill-val">95%</span></div><div class="skill-track"><div class="skill-prog" style="width:95%"></div></div></div>
+
+<div class="skill-row"><div class="skill-top"><span class="skill-name">Gestión de Infraestructura Tecnológica</span><span class="skill-val">90%</span></div><div class="skill-track"><div class="skill-prog" style="width:90%"></div></div></div>
+
+    <div class="win-divider"></div>
+    
+    <p class="win-section-label" style="margin-bottom:10px">// Soft Skills</p>
+    <div class="skills-grid">
+      <div class="soft-skill"><span class="icon">🤝</span>Trabajo en equipo</div>
+      <div class="soft-skill"><span class="icon">💡</span>Troubleshooting avanzado</div>
+      <div class="soft-skill"><span class="icon">🎯</span>Liderazgo</div>
+      <div class="soft-skill"><span class="icon">⚡</span>Gestión de crisis y soporte crítico</div>
+    </div>`,
+
+      education: `
+    <p class="win-section-label">// Formación académica</p>
+    <h2 class="win-subtitle">Educación</h2>
+    <div class="edu-card"><div class="edu-icon">🏛️</div><div><p class="edu-degree">Ingeniería en Desarrollo & Gestión de Software Multiplataforma</p><p class="edu-school">Universidad Tecnologíca de chetumal</p><span class="edu-year">2020 — 2022</span></div></div>
+    <div class="edu-card"><div class="edu-icon">☁️</div><div><p class="edu-degree">TSU en Tecnologías de la Información & Comunicación</p><p class="edu-school">Universidad Tecnologíca de chetumal</p><span class="edu-year">2018 — 2022</span></div></div>
+    <div class="edu-card"><div class="edu-icon">💻</div><div><p class="edu-degree">Técnico en Soporte & Mantenimiento en Equipos de Computo</p><p class="edu-school">CECyTE Chetumal</p><span class="edu-year">2015 — 2018</span></div></div>
+
+    <div class="win-divider"></div>
+    <h2 class="win-subtitle">Cursos</h2>
+    <div class="edu-card"><div class="edu-icon">📜</div><div><p class="edu-degree">Livewire 3 desde Cero</p><p class="edu-school">Udemy</p><span class="edu-year">2022</span></div></div>
+    <div class="edu-card"><div class="edu-icon">📜</div><div><p class="edu-degree">Laravel desde Cero</p><p class="edu-school">Laravel learn</p><span class="edu-year">2022</span></div></div>
+    <div class="edu-card"><div class="edu-icon">📜</div><div><p class="edu-degree">Programming Essentials in Python</p><p class="edu-school">(CISCO) PCAP</p><span class="edu-year">2019</span></div></div>
+    <div class="edu-card"><div class="edu-icon">📜</div><div><p class="edu-degree">Routing and Switching Essentials</p><p class="edu-school">(CISCO) CCNA R&S</p><span class="edu-year">2019</span></div></div>
+    <div class="edu-card"><div class="edu-icon">📜</div><div><p class="edu-degree">Introduction to Networks</p><p class="edu-school">(CISCO) CCNA R&S</p><span class="edu-year">2018</span></div></div>
+      `,
+
+      projects: `
+    <p class="win-section-label">// Portfolio</p>
+    <h2 class="win-subtitle">Mis Proyectos</h2>
+
+    <div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg,#667eea,#764ba2)">⚙️</div>
+      <div class="project-body">
+        <p class="project-name">Steam-Ready Interactive Story Engine</p>
+        <p class="project-desc">Desarrollo de un motor optimizado para la creación de NV interactivas. Diseñé una arquitectura escalable que permite a los autores configurar lógica de juego, ramas de decisión y recursos multimedia sin necesidad de programación adicional.</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">PHP</span><span class="tech-pill">JS</span><span class="tech-pill">CSS</span><span class="tech-pill">API</span><span class="tech-pill">WebGL</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+
+<div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg, #1a1a1a, #8b0000)">🚀</div>
+      <div class="project-body">
+        <p class="project-name">Play-in-browser game</p>
+        <p class="project-desc">Juego creado para jugar directamente en Desktop como una idea, con el concepto de Instant Play.</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">PHP</span><span class="tech-pill">JS</span><span class="tech-pill">CSS</span><span class="tech-pill">API</span><span class="tech-pill">WebGL</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+
+
+    <div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg, #f12711, #f5af19)">🛒</div>
+      <div class="project-body">
+        <p class="project-name">Smart Restaurant Costa Maya</p>
+        <p class="project-desc">Plataforma completa con panel admin, pagos y gestión de inventario. Pedidos y menu usuario.</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">PHP</span><span class="tech-pill">Laravel</span><span class="tech-pill">Livewire 4</span><span class="tech-pill">MariaDB</span><span class="tech-pill">JS</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg, #2c3e50, #27ae60)">📊</div>
+      <div class="project-body">
+        <p class="project-name">Dashboard de Gestión Fiscal para Grupos Empresariales</p>
+        <p class="project-desc">Herramienta de alto nivel para la gestión integral de impuestos en estructuras empresariales complejas. Facilita la auditoría interna y el cumplimiento normativo mediante un panel interactivo de indicadores clave (KPIs) financieros..</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">Laravel</span><span class="tech-pill">PHP</span><span class="tech-pill">Livewire 3</span><span class="tech-pill">MariaDB</span><span class="tech-pill">JS</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg, #00c6ff, #0072ff)">🤖</div>
+      <div class="project-body">
+        <p class="project-name">Chatbot Empresarial de Soporte con IA</p>
+        <p class="project-desc">Integración con OpenAI para resolución de dudas, soporte global multi-idioma y registro histórico de atención al cliente.</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">Laravel AI SDK</span><span class="tech-pill">PHP</span><span class="tech-pill">OpenAI PHP</span><span class="tech-pill">Prism</span><span class="tech-pill">MariaDB</span><span class="tech-pill">JS</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+
+        <div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg, #11998e, #38ef7d)">📲</div>
+      <div class="project-body">
+        <p class="project-name">Plataforma Digital de Gestión Médica Deportiva</p>
+        <p class="project-desc">Solución web de acceso inmediato diseñada para la optimización de procesos clínicos y el seguimiento especializado de pacientes de alto rendimiento, sin barreras de instalación.</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">PHP</span><span class="tech-pill">HTML/CSS</span><span class="tech-pill">Bootstrap</span><span class="tech-pill">JS</span><span class="tech-pill">MySQL</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+    
+        <div class="project-card">
+      <div class="project-banner" style="background:linear-gradient(135deg, #3f51b5, #5c6bc0)">📈</div>
+      <div class="project-body">
+        <p class="project-name">Plataforma de Vinculación y Seguimiento de Egresados</p>
+        <p class="project-desc">Sistema centralizado para la comunicación estratégica con exalumnos, diseñado para la recolección de retroalimentación clave y el fortalecimiento continuo del plantel educativo.</p>
+        <div class="tech-pills" style="margin-bottom:10px"><span class="tech-pill">Laravel</span><span class="tech-pill">Mercury</span><span class="tech-pill">PHP</span><span class="tech-pill">MariaDB</span></div>
+        <!--<div class="project-links"><a href="#" class="proj-link demo"><i class="bi bi-play-fill"></i> Demo</a><a href="#" class="proj-link code"><i class="bi bi-github"></i> Código</a></div>-->
+      </div>
+    </div>
+    
+    `,
+
+      contact: `
+    <p class="win-section-label">// Hablemos</p>
+    <h2 class="win-subtitle">Contacto</h2>
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:luislopez.job99@gmail.com"><span class="c-icon">📧</span><div class="c-label">Email</div><div class="c-value">luislopez.job99@gmail.com</div></a>
+      <a class="contact-card" href="#"><span class="c-icon">📱</span><div class="c-label">Teléfono</div><div class="c-value">+52 983 22 99 151</div></a>
+      <!--<a class="contact-card" href="#"><span class="c-icon">💼</span><div class="c-label">LinkedIn</div><div class="c-value">in/Luis Lopez</div></a>
+      <a class="contact-card" href="#"><span class="c-icon">🐙</span><div class="c-label">GitHub</div><div class="c-value">github.com/Luis Lopez</div></a>-->
+    </div>
+    <div class="win-divider"></div>
+    <p style="font-size:13px;color:#6e6e73;text-align:center;line-height:2">
+      🌍 Disponible para trabajo remoto o presencial
+      <br>
+      ✈️ Abierto a reubicación
+      <br>
+      ⚡ Respuesta en menos de 24 horas
+    </p>
+    `
+    };
+
+    /* Inject content into desktop windows */
+    Object.keys(CONTENT).forEach(id => {
+      const el = document.getElementById('content-' + id);
+      if (el) el.innerHTML = CONTENT[id];
+      const mel = document.getElementById('mobile-content-' + id);
+      if (mel) mel.innerHTML = CONTENT[id];
+    });
+
+    /* ══════════════════════════
+       CLOCK
+    ══════════════════════════ */
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const t = `${h}:${m}`;
+      const c = document.getElementById('clock');
+      const ic = document.getElementById('ios-clock');
+      if (c) c.textContent = t;
+      if (ic) ic.textContent = t;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ══════════════════════════
+       DESKTOP WINDOWS
+    ══════════════════════════ */
+    const openWindows = new Set();
+
+    function openWindow(id) {
+      const win = document.getElementById('win-' + id);
+      if (!win) return;
+      win.classList.add('active');
+      openWindows.add(id);
+      focusWindow('win-' + id);
+      const dot = document.getElementById('dot-' + id);
+      if (dot) dot.classList.add('visible');
+      if (id === 'terminal') runTerminal();
+    }
+
+    function closeWindow(id) {
+      const win = document.getElementById('win-' + id);
+      if (!win) return;
+      win.classList.remove('active', 'focused');
+      openWindows.delete(id);
+      const dot = document.getElementById('dot-' + id);
+      if (dot) dot.classList.remove('visible');
+    }
+
+    function minimizeWindow(id) { closeWindow(id); }
+
+    function toggleMaximize(winId) {
+      const win = document.getElementById(winId);
+      if (!win) return;
+
+      // Si ya está maximizada, restablecer
+      if (win.classList.contains('maximized')) {
+        win.classList.remove('maximized');
+        // Restaurar dimensiones originales
+        if (winId === 'win-about') { win.style.width = '520px'; win.style.height = '440px'; win.style.top = '60px'; win.style.left = '80px'; }
+        else if (winId === 'win-experience') { win.style.width = '560px'; win.style.height = '500px'; win.style.top = '80px'; win.style.left = '160px'; }
+        else if (winId === 'win-skills') { win.style.width = '480px'; win.style.height = '480px'; win.style.top = '100px'; win.style.left = '250px'; }
+        else if (winId === 'win-education') { win.style.width = '500px'; win.style.height = '380px'; win.style.top = '120px'; win.style.left = '320px'; }
+        else if (winId === 'win-projects') { win.style.width = '560px'; win.style.height = '500px'; win.style.top = '60px'; win.style.left = '200px'; }
+        else if (winId === 'win-contact') { win.style.width = '480px'; win.style.height = '400px'; win.style.top = '80px'; win.style.left = '300px'; }
+        else if (winId === 'win-terminal') { win.style.width = '500px'; win.style.height = '340px'; win.style.top = '140px'; win.style.left = '180px'; }
+      } else {
+        // Maximizar
+        win.classList.add('maximized');
+        win.style.width = '';
+        win.style.height = '';
+        win.style.top = '';
+        win.style.left = '';
+      }
+      focusWindow(winId);
+    }
+
+    function focusWindow(winId) {
+      document.querySelectorAll('.window').forEach(w => w.classList.remove('focused'));
+      const w = document.getElementById(winId);
+      if (w) w.classList.add('focused');
+    }
+
+    document.querySelectorAll('.window').forEach(win => {
+      win.addEventListener('mousedown', () => focusWindow(win.id));
+    });
+
+    /* Drag */
+    let dragging = null, dragOffX = 0, dragOffY = 0;
+    function startDrag(e, id) {
+      if (e.target.classList.contains('win-btn')) return;
+      dragging = id;
+      const win = document.getElementById(id);
+      const rect = win.getBoundingClientRect();
+      dragOffX = e.clientX - rect.left;
+      dragOffY = e.clientY - rect.top;
+      focusWindow(id);
+      e.preventDefault();
+    }
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const win = document.getElementById(dragging);
+      const x = Math.max(0, Math.min(e.clientX - dragOffX, window.innerWidth - win.offsetWidth));
+      const y = Math.max(28, Math.min(e.clientY - dragOffY, window.innerHeight - win.offsetHeight - 80));
+      win.style.left = x + 'px';
+      win.style.top = y + 'px';
+    });
+    document.addEventListener('mouseup', () => { dragging = null; resizing = null; });
+
+    /* Resize */
+    let resizing = null, resizeStartX, resizeStartY, resizeStartW, resizeStartH;
+    function startResize(e, id) {
+      resizing = id;
+      const win = document.getElementById(id);
+      resizeStartX = e.clientX; resizeStartY = e.clientY;
+      resizeStartW = win.offsetWidth; resizeStartH = win.offsetHeight;
+      e.preventDefault(); e.stopPropagation();
+    }
+    document.addEventListener('mousemove', e => {
+      if (!resizing) return;
+      const win = document.getElementById(resizing);
+      win.style.width = Math.max(320, resizeStartW + (e.clientX - resizeStartX)) + 'px';
+      win.style.height = Math.max(200, resizeStartH + (e.clientY - resizeStartY)) + 'px';
+    });
+
+    /* ══════════════════════════
+       iOS PANELS
+    ══════════════════════════ */
+    function openPanel(id) {
+      const panel = document.getElementById('panel-' + id);
+      if (!panel) return;
+      panel.classList.remove('closing');
+      panel.classList.add('open');
+      if (id === 'terminal') runMobileTerminal();
+      // Scroll to top
+      const body = panel.querySelector('.ios-panel-body');
+      if (body) body.scrollTop = 0;
+    }
+
+    function closePanel(id) {
+      const panel = document.getElementById('panel-' + id);
+      if (!panel) return;
+      panel.classList.add('closing');
+      setTimeout(() => panel.classList.remove('open', 'closing'), 300);
+    }
+
+    /* Swipe down to close panels */
+    let touchStartY = 0;
+    document.querySelectorAll('.ios-panel').forEach(panel => {
+      panel.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+      panel.addEventListener('touchend', e => {
+        const diff = e.changedTouches[0].clientY - touchStartY;
+        if (diff > 80) {
+          const id = panel.id.replace('panel-', '');
+          closePanel(id);
+        }
+      }, { passive: true });
+    });
+
+    /* ══════════════════════════
+       TERMINAL
+    ══════════════════════════ */
+    let terminalDone = false;
+    function runTerminal() {
+      if (terminalDone) return;
+      terminalDone = true;
+      renderTerminal('terminal-output', false);
+    }
+
+    let mobileTerminalDone = false;
+    function runMobileTerminal() {
+      if (mobileTerminalDone) return;
+      mobileTerminalDone = true;
+      renderTerminal('mobile-terminal-output', true);
+    }
+
+    function renderTerminal(outputId, isMobile) {
+      const output = document.getElementById(outputId);
+      if (!output) return;
+      const prefix = isMobile ? 'LuisServer@iphone' : 'LuisServer@macbook';
+      const lines = [
+                { text: 'whoami', delay: 400, color: '#00e5a0', prefix: true },
+        { text: 'Luis Lopez — Senior Full Stack Developer & Infrastructure Specialist', delay: 700, color: '#e0e0e0' },
+        { text: '', delay: 900 },
+
+        { text: 'cat habilidades.txt', delay: 1100, color: '#00e5a0', prefix: true },
+        { text: 'Software: Laravel · CakePHP · Node.js · PostgreSQL', delay: 1300, color: '#fda085' },
+        { text: 'Infra: Docker · AWS · Networking · Troubleshooting', delay: 1400, color: '#fda085' },
+        { text: '', delay: 1600 },
+
+        // Nuevo comando que resalta tus 9 años de soporte
+        { text: 'fetch --system-info', delay: 1700, color: '#00e5a0', prefix: true },
+        { text: 'OS: Infrastructure & Hardware Specialist (+9 Years)', delay: 1900, color: '#e0e0e0' },
+        { text: 'Kernel: Multiplatform Software Engineering (+7 Years)', delay: 2000, color: '#e0e0e0' },
+        { text: '', delay: 2100 },
+
+        { text: 'grep "status" trayectoria.log', delay: 2300, color: '#00e5a0', prefix: true },
+        { 
+          text: `+9 años profesional | +100 soluciones desplegadas | ${Math.floor(Math.random() * (200 - 150 + 1)) + 150} sesiones activas`, 
+          delay: 2600, 
+          color: '#fda085' 
+        },
+
+        { text: '', delay: 2800 },
+        { text: 'echo $DISPONIBLE', delay: 3000, color: '#00e5a0', prefix: true },
+        { text: '✓ Remoto / Presencial', delay: 3300, color: '#43e97b' },
+        { text: '', delay: 3500 },
+        { text: `${prefix} ~ %`, delay: 3700, color: '#00e5a0', cursor: true },
+
+      ];
+      lines.forEach(line => {
+        setTimeout(() => {
+          const div = document.createElement('div');
+          div.style.color = line.color || '#e0e0e0';
+          div.style.marginBottom = '2px';
+          if (line.prefix) {
+            div.innerHTML = `<span style="color:#00e5a0">${prefix} ~ % </span>${line.text}`;
+          } else if (line.cursor) {
+            div.innerHTML = line.text + '<span style="animation:blink 1s infinite">█</span>';
+          } else {
+            div.textContent = line.text;
+          }
+          output.appendChild(div);
+          output.scrollTop = output.scrollHeight;
+        }, line.delay);
+      });
+    }
+
+    /* ══════════════════════════
+       SPOTLIGHT
+    ══════════════════════════ */
+    const spotlightApps = [
+      { id: 'about', label: 'Sobre mí', icon: '👤' },
+      { id: 'experience', label: 'Experiencia', icon: '💼' },
+      { id: 'skills', label: 'Habilidades', icon: '⚙️' },
+      { id: 'education', label: 'Educación', icon: '🎓' },
+      { id: 'projects', label: 'Proyectos', icon: '📘' },
+      { id: 'contact', label: 'Contacto', icon: '📬' },
+      { id: 'terminal', label: 'Terminal', icon: '🖥️' },
+    ];
+
+    const spotlightBtn = document.getElementById('spotlight-btn');
+    if (spotlightBtn) spotlightBtn.onclick = toggleSpotlight;
+
+    function toggleSpotlight() {
+      const el = document.getElementById('spotlight');
+      el.classList.toggle('show');
+      if (el.classList.contains('show')) {
+        document.getElementById('spotlight-input').value = '';
+        document.getElementById('spotlight-results').innerHTML = '';
+        setTimeout(() => document.getElementById('spotlight-input').focus(), 50);
+      }
+    }
+
+    document.getElementById('spotlight').addEventListener('click', e => {
+      if (e.target === document.getElementById('spotlight')) toggleSpotlight();
+    });
+
+    function searchSpotlight(val) {
+      const res = document.getElementById('spotlight-results');
+      if (!val) { res.innerHTML = ''; return; }
+      const matches = spotlightApps.filter(a => a.label.toLowerCase().includes(val.toLowerCase()));
+      const isMobile = window.innerWidth <= 768;
+      res.innerHTML = matches.map((a, i) =>
+        `<div class="spotlight-result${i === 0 ? ' active' : ''}" onclick="${isMobile ? `openPanel('${a.id}')` : `openWindow('${a.id}')`};toggleSpotlight()">
+      <span class="sr-icon">${a.icon}</span> ${a.label}
+    </div>`
+      ).join('');
+    }
+
+    function spotlightKey(e) {
+      if (e.key === 'Escape') toggleSpotlight();
+      if (e.key === 'Enter') {
+        const active = document.querySelector('.spotlight-result.active');
+        if (active) active.click();
+      }
+    }
+
+    /* ══════════════════════════
+       NOTIFICATION
+    ══════════════════════════ */
+    setTimeout(() => {
+      const n = document.getElementById('notification');
+      n.classList.add('show');
+      setTimeout(() => n.classList.remove('show'), 5000);
+    }, 800);
+
+    /* ══════════════════════════
+       INIT
+    ══════════════════════════ */
+    const isMobile = () => window.innerWidth <= 768;
+
+    setTimeout(() => {
+      if (!isMobile()) openWindow('about');
+    }, 600);
+  </script>
 </body>
 
 </html>
